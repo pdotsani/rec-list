@@ -1,0 +1,48 @@
+'use strict';
+
+var Discogs = require('disconnect').Client;
+var config = require('config');
+var express = require('express');
+
+var router = express.Router();
+
+var REQUEST_DATA;
+var ACCESS_DATA;
+
+router.get('/authorize', function(req, res) {
+  var oAuth = new Discogs().oauth();
+  oAuth.getRequestToken(
+    config.get('DISCOGS_KEY'),
+    config.get('DISCOGS_SECRET'),
+    'http://localhost:5000/oauth/callback',
+    function(err, requestData) {
+      if(err) console.error(err);
+      REQUEST_DATA = requestData;
+      res.redirect(requestData.authorizeUrl);
+    }
+  );
+});
+
+router.get('/callback', function(req, res){
+  var oAuth = new Discogs(REQUEST_DATA).oauth();
+  oAuth.getAccessToken(
+    req.query.oauth_verifier, // Verification code sent back by Discogs
+    function(err, accessData){
+      if(err) console.error(err);
+      ACCESS_DATA = accessData;
+      res.redirect('/list');
+    }
+  );
+});
+
+router.get('/logout', function(req, res) {
+  req.session.destroy(function(err) {
+    if(err) {
+      console.error(err);
+    } else {
+      res.redirect('/login');
+    }
+  });
+});
+
+module.exports = router;
