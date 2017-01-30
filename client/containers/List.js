@@ -5,7 +5,7 @@ export default class List extends Component {
 
 	constructor(props) {
 		super(props);
-		fetch('/api/collection/me')
+		fetch('/api/collection/me', { credentials: 'same-origin' })
 			.then(res => console.log('complete! - ', res))
 			.catch(err => console.error(err));
 	}

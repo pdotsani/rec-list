@@ -6,9 +6,6 @@ var express = require('express');
 
 var router = express.Router();
 
-var REQUEST_DATA;
-var ACCESS_DATA;
-
 router.get('/authorize', function(req, res) {
   var oAuth = new Discogs().oauth();
   oAuth.getRequestToken(
@@ -17,19 +14,20 @@ router.get('/authorize', function(req, res) {
     'http://localhost:5000/oauth/callback',
     function(err, requestData) {
       if(err) console.error(err);
-      REQUEST_DATA = requestData;
+      req.session.requestData = requestData;
       res.redirect(requestData.authorizeUrl);
     }
   );
 });
 
 router.get('/callback', function(req, res){
-  var oAuth = new Discogs(REQUEST_DATA).oauth();
+  var oAuth = new Discogs(req.session.requestData).oauth();
   oAuth.getAccessToken(
     req.query.oauth_verifier, // Verification code sent back by Discogs
     function(err, accessData){
       if(err) console.error(err);
-      ACCESS_DATA = accessData;
+      req.session.accessData = accessData;
+      delete req.session.requestData;
       res.redirect('/list');
     }
   );
