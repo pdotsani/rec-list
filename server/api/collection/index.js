@@ -12,7 +12,7 @@ router.get('/me', function(req, res) {
   var releases = [];
   dis.getIdentity(function(err, data){
   	console.log(data.username);
-  	col.getReleases('mike800gie'/* replace with data.username */, 
+  	col.getReleases(data.username, 
   		0, { page: 1, per_page: 25 }, function(err, data){
   			data.releases.forEach(function(release, idx) {
   				releases.push({

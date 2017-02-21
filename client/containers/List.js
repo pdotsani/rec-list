@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import fetch from 'isomorphic-fetch';
+import React, { Component } from 'react'
+import fetch from 'isomorphic-fetch'
 
 export default class List extends Component {
 
@@ -26,12 +26,13 @@ export default class List extends Component {
 
 	render() {
 		return (
-			<div>
-				<h2>Rec-list here...</h2>
+			<ul class="row" className="list-unstyled" style={{ marginTop: '50px' }}>
 				{this.state.releases.map((release, idx) =>
-					<div key={idx}>{release.title} - {release.artist}</div>
+					<li key={idx}
+						className="col-md-4 col-md-offset-4 col-sm-12">
+						{release.title} - {release.artist}</li>
 				)}
-			</div>
+			</ul>
 		)
 	}
 }
