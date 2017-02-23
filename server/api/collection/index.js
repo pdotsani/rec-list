@@ -19,7 +19,6 @@ router.get('/me', function(req, res) {
           id: listing.id
         });
       });
-      console.log(listings);
       data['listings'] = listings;
       res.json(data)
     });
@@ -30,8 +29,7 @@ router.delete('/:id', function(req, res) {
   var id = req.params.id;
   var dis = new Discogs(req.session.accessData).marketplace();
   dis.deleteListing(id, function(err, data) {
-    console.log('id: ' + id);
-    console.log('data: ', data);
+    res.sendStatus(200);
   });
 });
 

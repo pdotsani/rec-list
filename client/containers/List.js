@@ -31,14 +31,20 @@ export default class List extends Component {
 			.catch(err => console.error(err));
 	}
 
-	deleteRelease(id) {
+	deleteRelease(id, idx) {
 		console.log('id: ', id);
 		fetch(`/api/collection/${id}`, {
 				method: 'delete',
 				credentials: 'same-origin'
 			})
-			.then(res => this.loadReleases())
-			.catch(err => console.err(err))
+			.then(res => {
+				console.log('in delete');
+				this.setState({
+					listings: [...this.state.listings.slice(0, idx),
+						...this.state.listings.slice(idx+1)]
+				})
+			})
+			.catch(err => console.error(err))
 	}
 
 	render() {
@@ -50,7 +56,7 @@ export default class List extends Component {
 						className="col-md-4 col-md-offset-4 col-sm-12">
 						{listing.release.description}
 						 <button className="btn btn-sm" style={{ marginLeft: '15px' }}
-							onClick={this.deleteRelease.bind(this, listing.id)}>
+							onClick={this.deleteRelease.bind(this, listing.id, idx)}>
 							Delete</button>
 					</li>
 				)}
