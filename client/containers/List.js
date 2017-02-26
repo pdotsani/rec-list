@@ -7,12 +7,12 @@ export default class List extends Component {
 		super(props);
 		this.state = { loading: false, listings: [] }
 
-		this.loadListings = this.loadListings.bind(this);
-		this.deleteRelease = this.deleteRelease.bind(this);
+		this.loadListings = this.loadListings.bind(this)
+		this.deleteRelease = this.deleteRelease.bind(this)
 	}
 
 	componentDidMount() {
-		this.loadListings();
+		this.loadListings()
 	}
 
 	loadListings() {
@@ -25,10 +25,9 @@ export default class List extends Component {
 					pagination: json.pagination,
 					listings: json.listings,
 					loading: false 
-				});
-				console.log(this.state)
+				})
 			})
-			.catch(err => console.error(err));
+			.catch(err => console.error(err))
 	}
 
 	deleteRelease(id, idx) {
@@ -38,7 +37,6 @@ export default class List extends Component {
 				credentials: 'same-origin'
 			})
 			.then(res => {
-				console.log('in delete');
 				this.setState({
 					listings: [...this.state.listings.slice(0, idx),
 						...this.state.listings.slice(idx+1)]
