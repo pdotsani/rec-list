@@ -43,4 +43,12 @@ router.get('/logout', function(req, res) {
   });
 });
 
+router.get('/is', function(req, res) {
+  if(req.session.accessData) {
+    res.json({ isAuth: true });
+  } else {
+    res.json({ isAuth: false });
+  }
+});
+
 module.exports = router;
