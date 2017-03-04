@@ -1,6 +1,6 @@
-import React from 'react';
-import { render } from 'react-dom';
-import { Router, Route, browserHistory } from 'react-router';
+import React from 'react'
+import { render } from 'react-dom'
+import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import fetch from 'isomorphic-fetch'
 
 import App from './containers/App'
@@ -20,7 +20,7 @@ const toLogin = (nextState, replace, callback) => {
 	isAuth()
 		.then(result => {
 			if(!result.isAuth) {
-				replace('/login')
+				replace('/')
 			}
 			callback()
 		})
@@ -39,7 +39,7 @@ const toApp = (nextState, replace, callback) => {
 render((
 	<Router history={browserHistory}>
 		<Route path="/" component={App}>
-			<Route path="login" component={Login} onEnter={toApp} />
+			<IndexRoute component={Login} onEnter={toApp} />
 			<Route path="list" component={List} onEnter={toLogin} />
 		</Route>
 	</Router>
