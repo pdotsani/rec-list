@@ -1,13 +1,13 @@
 'use strict';
 
 var Discogs = require('disconnect').Client;
-var config = require('config');
+// var config = require('config');
 var express = require('express');
 
 var router = express.Router();
 
-var DISCOGS_KEY = process.env.DISCOGS_KEY || config.get('DISCOGS_KEY');
-var DISCOGS_SECRET = process.env.DISCOGS_SECRET || config.get('DISCOGS_SECRET');
+var DISCOGS_KEY = process.env.DISCOGS_KEY // || config.get('DISCOGS_KEY');
+var DISCOGS_SECRET = process.env.DISCOGS_SECRET // || config.get('DISCOGS_SECRET');
 var URL_CALLBACK = process.env.URL_CALLBACK || 'http://localhost:5000/oauth/callback';
 
 router.get('/authorize', function(req, res) {
