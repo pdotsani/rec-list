@@ -6,6 +6,7 @@
 
 // Set default node environment to development
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+process.env.MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/rec_list_sessions';
 
 var session = require('express-session');
 var MongoDBStore = require('connect-mongodb-session')(session);
@@ -14,7 +15,7 @@ var express = require('express');
 // Setup server
 var app = express();
 var store = new MongoDBStore({
-  uri: 'mongodb://localhost:27017/rec_list_sessions',
+  uri: process.env.MONGODB_URI,
   collection: 'sessions'
 });
 // Config server

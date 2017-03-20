@@ -6,12 +6,16 @@ var express = require('express');
 
 var router = express.Router();
 
+var DISCOGS_KEY = process.env.DISCOGS_KEY || config.get('DISCOGS_KEY');
+var DISCOGS_SECRET = process.env.DISCOGS_SECRET || config.get('DISCOGS_SECRET');
+var URL_CALLBACK = process.env.URL_CALLBACK || 'http://localhost:5000/oauth/callback';
+
 router.get('/authorize', function(req, res) {
   var oAuth = new Discogs().oauth();
   oAuth.getRequestToken(
-    config.get('DISCOGS_KEY'),
-    config.get('DISCOGS_SECRET'),
-    'http://localhost:5000/oauth/callback',
+    DISCOGS_KEY,
+    DISCOGS_SECRET,
+    URL_CALLBACK,
     function(err, requestData) {
       if(err) console.error(err);
       req.session.requestData = requestData;
