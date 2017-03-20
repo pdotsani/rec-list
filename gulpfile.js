@@ -13,6 +13,11 @@ gulp.task('index', function() {
 		.pipe(gulp.dest('./dist/client'))
 });
 
+gulp.task('css', function() {
+	return gulp.src('./client/css/**/*')
+		.pipe(gulp.dest('./dist/client/css'))
+});
+
 gulp.task('server', function() {
 	return gulp.src('./server/**/*')
 		.pipe(gulp.dest('./dist/server'))
@@ -26,6 +31,6 @@ gulp.task('watch-back', function() {
 	gulp.watch('./server/**/*', ['server'])
 });
 
-gulp.task('default', ['webpack', 'index', 'server', 'watch-front', 'watch-back']);
+gulp.task('default', ['webpack', 'index', 'server', 'css', 'watch-front', 'watch-back']);
 
-gulp.task('build', ['webpack', 'index', 'server']);
+gulp.task('build', ['webpack', 'index', 'server' ,'css']);

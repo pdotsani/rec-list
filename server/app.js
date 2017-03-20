@@ -28,6 +28,7 @@ app.use(session({
   store: store
 }))
 app.use(express.static(__dirname + '/../client'));
+
 var server = require('http').createServer(app);
 
 // Add routes
