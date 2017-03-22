@@ -1,17 +1,23 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router'
 import Modal from 'react-modal'
 import fetch from 'isomorphic-fetch'
+
+import Pagination from '../components/Pagination'
 
 export default class List extends Component {
 
 	constructor(props) {
-		super(props);
-		this.state = { loading: false,
+		super(props)
+		this.state = { 
+			loading: false,
 			listings: [],
+			current: 1,
 			confirmModal: false,
 			toggledId: '',
 			toggleIdx: '',
-			toggleDesc: ''
+			toggleDesc: '',
+			pagination: {}
 		}
 
 		this.loadListings = this.loadListings.bind(this)
@@ -21,12 +27,13 @@ export default class List extends Component {
 	}
 
 	componentDidMount() {
-		this.loadListings()
+		this.loadListings(1)
 	}
 
-	loadListings() {
+	loadListings(p) {
+		console.log('loading')
 		this.setState({ loading: true });
-		fetch('/api/collection/me', { credentials: 'same-origin' })
+		fetch(`/api/collection/me/${p}`, { credentials: 'same-origin' })
 			.then(res => res.json())
 			.then(json => {
 				this.setState({
@@ -70,7 +77,6 @@ export default class List extends Component {
 			.catch(err => console.error(err))
 	}
 
-
 	render() {
 
 		let customStyles = {
@@ -111,6 +117,9 @@ export default class List extends Component {
 						</li>
 					)}
 				</ul>
+				<Pagination current={this.state.current}
+					loadListings={this.loadListings}
+					pages={this.state.pagination.pages}></Pagination>
 			</div>
 		)
 	}

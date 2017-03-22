@@ -6,21 +6,23 @@ var express = require('express');
 
 var router = express.Router();
 
-router.get('/me', function(req, res) {
+router.get('/me/:page', function(req, res) {
+  var page = req.params.page;
   var dis = new Discogs(req.session.accessData);
   var usr = new Discogs().user();
   var listings = [];
   dis.getIdentity(function(err, data){
-    usr.getInventory(data.username, function(err, data) {
-      data.listings.forEach(function(listing, idx) {
+    usr.getInventory(data.username, { page: page, perPage: 50 }, function(err, inventory) {
+      inventory.listings.forEach(function(listing, idx) {
         listings.push({
           price: listing.price,
           release: listing.release,
           id: listing.id
         });
       });
-      data['listings'] = listings;
-      res.json(data)
+      inventory['listings'] = listings;
+      inventory['current'] = 1;
+      res.json(inventory)
     });
   });
 });
