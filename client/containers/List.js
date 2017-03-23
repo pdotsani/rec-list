@@ -4,6 +4,7 @@ import Modal from 'react-modal'
 import fetch from 'isomorphic-fetch'
 
 import Pagination from '../components/Pagination'
+import Listings from '../components/Listings'
 
 export default class List extends Component {
 
@@ -30,13 +31,14 @@ export default class List extends Component {
 		this.loadListings(1)
 	}
 
-	loadListings(p) {
+	loadListings(pg) {
 		console.log('loading')
 		this.setState({ loading: true });
-		fetch(`/api/collection/me/${p}`, { credentials: 'same-origin' })
+		fetch(`/api/collection/me/${pg}`, { credentials: 'same-origin' })
 			.then(res => res.json())
 			.then(json => {
 				this.setState({
+					current: pg,
 					folder: json.folder,
 					pagination: json.pagination,
 					listings: json.listings,
@@ -103,23 +105,11 @@ export default class List extends Component {
 					<button className="btn btn-default"
 						onClick={this.closeModal}>No</button>
 				</Modal>
-				<ul className="list-unstyled text-center" style={{ marginTop: '50px' }}>
-					{this.state.listings.map((listing, idx) =>
-						<li key={idx} style={{ marginTop: '5px',
-							fontSize: '30px', borderBottom: '1px dashed grey' }}
-							className="col-md-4 col-md-offset-4 col-sm-12">
-							{listing.release.description}
-							 <button className="btn btn-sm" style={{ marginLeft: '15px' }}
-								onClick={this
-									.openModal
-									.bind(this, listing.id, idx, listing.release.description)}>
-								Delete</button>
-						</li>
-					)}
-				</ul>
+				<Listings listings={this.state.listings} 
+					openModal={this.openModal} />
 				<Pagination current={this.state.current}
 					loadListings={this.loadListings}
-					pages={this.state.pagination.pages}></Pagination>
+					pages={this.state.pagination.pages} />
 			</div>
 		)
 	}
