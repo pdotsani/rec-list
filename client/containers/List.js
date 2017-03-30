@@ -37,8 +37,9 @@ export default class List extends Component {
 		fetch(`/api/collection/me/${pg}`, { credentials: 'same-origin' })
 			.then(res => res.json())
 			.then(json => {
+				console.log(json);
 				this.setState({
-					current: pg,
+					current: json.current,
 					folder: json.folder,
 					pagination: json.pagination,
 					listings: json.listings,

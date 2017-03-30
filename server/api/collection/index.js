@@ -7,7 +7,7 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/me/:page', function(req, res) {
-  var page = req.params.page;
+  var page = parseInt(req.params.page);
   var dis = new Discogs(req.session.accessData);
   var usr = new Discogs().user();
   var listings = [];
@@ -21,7 +21,7 @@ router.get('/me/:page', function(req, res) {
         });
       });
       inventory['listings'] = listings;
-      inventory['current'] = 1;
+      inventory['current'] = page;
       res.json(inventory)
     });
   });
